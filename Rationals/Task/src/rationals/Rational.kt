@@ -58,9 +58,11 @@ infix operator fun Rational.plus(b:Rational): Rational = Rational(this.rational.
 infix operator fun Rational.minus(b:Rational): Rational = Rational(this.rational.first*b.rational.second -
         this.rational.second*b.rational.first,
     this.rational.second*b.rational.second)
-infix operator fun Rational.times(b:Rational): Rational = Rational(this.rational.first*b.rational.first ,
+infix operator fun Rational.times(b:Rational): Rational = Rational( if (this.minussign == b.minussign)
+    this.rational.first*b.rational.first else -this.rational.first*b.rational.first,
     this.rational.second*b.rational.second)
-infix operator fun Rational.div(b:Rational): Rational = Rational(this.rational.first*b.rational.second ,
+infix operator fun Rational.div(b:Rational): Rational = Rational( if (this.minussign == b.minussign)
+    this.rational.first*b.rational.second else -this.rational.first*b.rational.second,
     this.rational.second*b.rational.first)
 operator fun BigInteger.rangeTo(b: BigInteger):ClosedRange<BigInteger> = this..b
 operator fun Rational.rangeTo(b:Rational): ClosedRange<Float> = this.rational.first.toFloat()/this.rational.second.toFloat()..b.rational.first.toFloat()/b.rational.second.toFloat()
