@@ -60,7 +60,9 @@ operator  fun Rational.unaryMinus(): Rational {
     if (this.minussign == "") this.minussign= "-" else this.minussign = ""
     return this
 }
-
+infix operator fun Rational.compareTo(b: Rational) :Int {
+    return (this.rational.first.toFloat()/this.rational.second.toFloat() ).compareTo(b.rational.first.toFloat()/b.rational.second.toFloat())
+}
 infix operator fun Rational.plus(b:Rational): Rational = Rational(this.rational.first*b.rational.second +
         this.rational.second*b.rational.first,
     this.rational.second*b.rational.second)
@@ -124,7 +126,15 @@ fun main() {
     println("117/1098".toRational().toString() == "13/122")
 
     val twoThirds = 2 divBy 3
-//    println(half < twoThirds)
+    println(half < twoThirds)
+    println("Comparesen ")
+    val s1 = 3 divBy 5
+    val s2 = 1 divBy 5
+    println("S1,S2 $s1 $s2 here s1<s2 : ${s1 < s2} ")
+    println("S1,S2 $s1 $s2 here s1>s2 : ${s1 > s2} ")
+    println("S1,S2 $s1 $s2 here s1=s2 : ${s1 == s2} ")
+    println("S1,S2 $s1 $s2 here s1<=s2 : ${s1 <= s2} ")
+
 
 //    println(half in third..twoThirds)
 
