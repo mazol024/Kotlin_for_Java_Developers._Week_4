@@ -1,4 +1,5 @@
 package rationals
+import org.w3c.dom.ranges.Range
 import java.math.BigInteger
 import java.util.NoSuchElementException
 
@@ -69,7 +70,9 @@ infix operator fun Rational.times(b:Rational): Rational = Rational(this.rational
 infix operator fun Rational.div(b:Rational): Rational = Rational(this.rational.first*b.rational.second ,
     this.rational.second*b.rational.first)
 
-
+operator fun Rational.rangeTo(b:Rational): ClosedRange<BigInteger> = this.rational.first/this.rational.second..b.rational.first/b.rational.second
+operator fun ClosedRange<BigInteger>.contains(b: Rational): Boolean = if (b.rational.first/b.rational.second>=this.start
+    &&b.rational.first/b.rational.second<=this.endInclusive ) true else false
 
 fun main() {
 
@@ -131,8 +134,10 @@ fun main() {
     println("S1,S2 $s1 $s2 here s1=s2 : ${s1 == s2} ")
     println("S1,S2 $s1 $s2 here s1<=s2 : ${s1 <= s2} ")
 
-
-//    println(half in third..twoThirds)
+    println("Check in Range")
+    println("${-half} in $third..$twoThirds ${half in third..twoThirds}")
+    println("${"1/2".toRational()} in $third..$third ${"1/2".toRational() in third..third}")
+    println("1/8".toRational() in third..half)
 
    // println(2000000000L divBy 4000000000L == 1 divBy 2)
     println(2L divBy 4L == 1 divBy 2)
@@ -140,3 +145,4 @@ fun main() {
     println("912016490186296920119201192141970416029".toBigInteger() divBy
             "1824032980372593840238402384283940832058".toBigInteger() == 1 divBy 2)
 }
+
