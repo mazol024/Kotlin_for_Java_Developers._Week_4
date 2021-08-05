@@ -3,31 +3,32 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.NoSuchElementException
 
-class Rational (numerator:Int,denominator:Int){
-    val rational:Pair<Int,Int> = Pair(numerator,denominator)
-    val normalized: Pair<Int,Int> = normalizeIt()
+class Rational (numerator:BigInteger,denominator:BigInteger){
+    val rational:Pair<BigInteger,BigInteger> = Pair(if (numerator<0.toBigInteger()) -numerator else numerator,
+        if (denominator< 0.toBigInteger()) -denominator else denominator)
+    val normalized: Pair<BigInteger,BigInteger> = normalizeIt()
     var minussign: String
     init {
-        this.minussign = if((rational.first > 0 && rational.second > 0)
-            or (rational.first < 0 && rational.second < 0)) "" else "-"
+        this.minussign = if((rational.first > "0".toBigInteger() && rational.second > "0".toBigInteger())
+            or (rational.first < "0".toBigInteger() && rational.second < "0".toBigInteger() ) ) "" else "-"
     }
-    private fun normalizeIt():Pair<Int,Int> {
-        var a = 1
-        var b = 1
-        for (looper in 1..Math.abs(this.rational.first.toInt())){
-            if (this.rational.first.toInt()%looper == 0 && this.rational.second.toInt()%looper == 0) {
-                a = this.rational.first.toInt() / looper
-                b = this.rational.second.toInt() / looper
+    private fun normalizeIt():Pair<BigInteger,BigInteger> {
+        var a = "1".toBigInteger()
+        var b = "1".toBigInteger()
+        for (looper in 1..this.rational.first.toInt() ){
+            if (this.rational.first%looper.toBigInteger() == "0".toBigInteger() && this.rational.second%looper.toBigInteger() == "0".toBigInteger()) {
+                a = this.rational.first / looper.toBigInteger()
+                b = this.rational.second / looper.toBigInteger()
             }
         }
-        return Pair<Int,Int>(Math.abs(a),Math.abs(b))
+        return Pair<BigInteger,BigInteger>(a,b)
     }
 
     override fun toString(): String {
 
         return "${this.minussign}" +
-                "${Math.abs(this.rational.first)}" +
-                "${if (Math.abs(this.rational.second) != 1) "/".plus(Math.abs(this.rational.second)) else ""}"
+                "${this.rational.first}" +
+                "${if (this.rational.second != 1.toBigInteger()) "/".plus(this.rational.second) else ""}"
 //                "(Normalized version: ${minussign}${Math.abs(normalized.first)}" +
 //                "${if(Math.abs(normalized.second) != 1) "/".plus(Math.abs(normalized.second))
 //                else ""
@@ -41,17 +42,17 @@ class Rational (numerator:Int,denominator:Int){
     }
 
 }
-infix  fun Int.divBy(b:Int):Rational = Rational(this,b)
-infix  fun Long.divBy(b:Long):Rational =Rational(this.toInt(),b.toInt())
-infix  fun BigInteger.divBy(b:BigInteger):Rational =Rational(this.toInt(),b.toInt())
+infix  fun Int.divBy(b:Int):Rational = Rational(this.toBigInteger(),b.toBigInteger())
+infix  fun Long.divBy(b:Long):Rational =Rational(this.toBigInteger(),b.toBigInteger())
+infix  fun BigInteger.divBy(b:BigInteger):Rational =Rational(this,b)
 
 fun String.toRational():Rational {
     var pair = this.split("/")
     var outp: Rational
     when {
-        pair.size == 0 -> outp = Rational(0,0)
-        pair.size ==1 -> outp = Rational(pair[0].toInt(),1)
-        else -> outp = Rational(pair[0].toInt(),pair[1].toInt())
+        pair.size == 0 -> outp = Rational(0.toBigInteger(),0.toBigInteger())
+        pair.size ==1 -> outp = Rational(pair[0].toBigInteger(),1.toBigInteger())
+        else -> outp = Rational(pair[0].toBigInteger(),pair[1].toBigInteger())
     }
     return outp
 }
@@ -78,13 +79,13 @@ infix operator fun Rational.div(b:Rational): Rational = Rational(this.rational.f
 
 fun main() {
 
-    val a:Rational = Rational(117,1098)
+    val a:Rational = 117 divBy 1098
     println(a.toString() )
-    val b:Rational = Rational(2,1)
+    val b:Rational = 2 divBy 1
     println(b.toString() )
-    val c:Rational = Rational(-2,4)
+    val c:Rational = -2 divBy 4
     println(c.toString() )
-    val d:Rational = Rational(-21,105)
+    val d:Rational = -21 divBy  105
     println(d.toString() )
 
    val half = 1 divBy 2
