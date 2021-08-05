@@ -12,8 +12,8 @@ class Rational (numerator:BigInteger,denominator:BigInteger){
             or (numerator < "0".toBigInteger() && denominator < "0".toBigInteger() ) ) "" else "-"
     }
     private fun normalizeIt():Pair<BigInteger,BigInteger> {
-        var gcd = this.rational.first.gcd(this.rational.second)
-        return Pair<BigInteger,BigInteger>(this.rational.first/gcd,this.rational.second/gcd)
+        var gcd:BigInteger = this.rational.second.gcd(this.rational.first)
+        return if (gcd != 0.toBigInteger())  Pair<BigInteger,BigInteger>(this.rational.first/gcd,this.rational.second/gcd) else this.rational
     }
 
     override fun toString(): String {
@@ -51,9 +51,7 @@ operator  fun Rational.unaryMinus(): Rational {
     if (this.minussign == "") this.minussign= "-" else this.minussign = ""
     return this
 }
-infix operator fun Rational.compareTo(b: Rational) :Int {
-    return (this.rational.first/this.rational.second ).compareTo(b.rational.first/b.rational.second)
-}
+
 infix operator fun Rational.plus(b:Rational): Rational = Rational(this.rational.first*b.rational.second +
         this.rational.second*b.rational.first,
     this.rational.second*b.rational.second)
@@ -69,6 +67,10 @@ operator fun Rational.rangeTo(b:Rational): ClosedRange<Float> = this.rational.fi
 operator fun ClosedRange<Float>.contains(b: Rational): Boolean = if ((b.rational.first.toFloat()/b.rational.second.toFloat()>=this.start)
     && (b.rational.first.toFloat()/b.rational.second.toFloat()<=this.endInclusive) ) true else false
 
+infix operator fun Rational.compareTo(b: Rational) :Int {
+    return ( if (this.minussign == "") this.normalized.first*b.normalized.second else -this.normalized.first*b.normalized.second)
+        .compareTo( if (b.minussign == "") b.normalized.first*this.normalized.second else -b.normalized.first*this.normalized.second )
+}
 
 fun main() {
     val half = 1 divBy 2
@@ -95,6 +97,8 @@ fun main() {
 
     val twoThirds = 2 divBy 3
     println(" half < twoThirds is :  ${half < twoThirds} ${half} < ${twoThirds}")
+    println("87077/297895 < 40687/138970 true ${87077 divBy 297895 < 40687 divBy 138970}")
+
 
     println(half in third..twoThirds)
 
