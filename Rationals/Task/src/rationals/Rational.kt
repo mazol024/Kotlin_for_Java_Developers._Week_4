@@ -12,16 +12,8 @@ class Rational (numerator:BigInteger,denominator:BigInteger){
             or (numerator < "0".toBigInteger() && denominator < "0".toBigInteger() ) ) "" else "-"
     }
     private fun normalizeIt():Pair<BigInteger,BigInteger> {
-        var a:BigInteger = "1".toBigInteger()
-        var b:BigInteger = "1".toBigInteger()
-
-        for (  looper:BigInteger in  arrayListOf<BigInteger>(this.rational.first)){
-            if (this.rational.first%looper == "0".toBigInteger() && this.rational.second%looper == "0".toBigInteger()) {
-                a = this.rational.first / looper
-                b = this.rational.second / looper
-            }
-        }
-        return Pair<BigInteger,BigInteger>(a,b)
+        var gcd = this.rational.first.gcd(this.rational.second)
+        return Pair<BigInteger,BigInteger>(this.rational.first/gcd,this.rational.second/gcd)
     }
 
     override fun toString(): String {
@@ -37,6 +29,9 @@ class Rational (numerator:BigInteger,denominator:BigInteger){
     }
 
 }
+
+
+
 infix  fun Int.divBy(b:Int):Rational = Rational(this.toBigInteger(),b.toBigInteger())
 infix  fun Long.divBy(b:Long):Rational =Rational(this.toBigInteger(),b.toBigInteger())
 infix  fun BigInteger.divBy(b:BigInteger):Rational =Rational(this,b)
@@ -69,43 +64,42 @@ infix operator fun Rational.times(b:Rational): Rational = Rational(this.rational
     this.rational.second*b.rational.second)
 infix operator fun Rational.div(b:Rational): Rational = Rational(this.rational.first*b.rational.second ,
     this.rational.second*b.rational.first)
-
+operator fun BigInteger.rangeTo(b: BigInteger):ClosedRange<BigInteger> = this..b
 operator fun Rational.rangeTo(b:Rational): ClosedRange<Float> = this.rational.first.toFloat()/this.rational.second.toFloat()..b.rational.first.toFloat()/b.rational.second.toFloat()
 operator fun ClosedRange<Float>.contains(b: Rational): Boolean = if ((b.rational.first.toFloat()/b.rational.second.toFloat()>=this.start)
     && (b.rational.first.toFloat()/b.rational.second.toFloat()<=this.endInclusive) ) true else false
 
-fun main() {
 
+fun main() {
     val half = 1 divBy 2
     val third = 1 divBy 3
 
     val sum: Rational = half + third
-    5 divBy 6 == sum
+    println(5 divBy 6 == sum)
 
     val difference: Rational = half - third
-    1 divBy 6 == difference
+    println(1 divBy 6 == difference)
 
     val product: Rational = half * third
-    1 divBy 6 == product
+    println(1 divBy 6 == product)
 
     val quotient: Rational = half / third
-    3 divBy 2 == quotient
+    println(3 divBy 2 == quotient)
 
     val negation: Rational = -half
-    -1 divBy 2 == negation
+    println(-1 divBy 2 == negation)
 
-    (2 divBy 1).toString() == "2"
-    (-2 divBy 4).toString() == "-1/2"
-    "117/1098".toRational().toString() == "13/122"
+    println((2 divBy 1).toString() == "2")
+    println((-2 divBy 4).toString() == "-1/2")
+    println("117/1098".toRational().toString() == "13/122")
 
     val twoThirds = 2 divBy 3
-    half < twoThirds
+    println(" half < twoThirds is :  ${half < twoThirds} ${half} < ${twoThirds}")
 
-    half in third..twoThirds
+    println(half in third..twoThirds)
 
-    2000000000L divBy 4000000000L == 1 divBy 2
+    println(2000000000L divBy 4000000000L == 1 divBy 2)
 
-    "912016490186296920119201192141970416029".toBigInteger() divBy
-            "1824032980372593840238402384283940832058".toBigInteger() == 1 divBy 2
+    println("912016490186296920119201192141970416029".toBigInteger() divBy
+            "1824032980372593840238402384283940832058".toBigInteger() == 1 divBy 2)
 }
-
