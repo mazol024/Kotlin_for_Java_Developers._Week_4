@@ -70,79 +70,42 @@ infix operator fun Rational.times(b:Rational): Rational = Rational(this.rational
 infix operator fun Rational.div(b:Rational): Rational = Rational(this.rational.first*b.rational.second ,
     this.rational.second*b.rational.first)
 
-operator fun Rational.rangeTo(b:Rational): ClosedRange<BigInteger> = this.rational.first/this.rational.second..b.rational.first/b.rational.second
-operator fun ClosedRange<BigInteger>.contains(b: Rational): Boolean = if (b.rational.first/b.rational.second>=this.start
-    &&b.rational.first/b.rational.second<=this.endInclusive ) true else false
+operator fun Rational.rangeTo(b:Rational): ClosedRange<Float> = this.rational.first.toFloat()/this.rational.second.toFloat()..b.rational.first.toFloat()/b.rational.second.toFloat()
+operator fun ClosedRange<Float>.contains(b: Rational): Boolean = if ((b.rational.first.toFloat()/b.rational.second.toFloat()>=this.start)
+    && (b.rational.first.toFloat()/b.rational.second.toFloat()<=this.endInclusive) ) true else false
 
 fun main() {
-
-    val a:Rational = 117 divBy 1098
-    println(a.toString() )
-    val b:Rational = 2 divBy 1
-    println(b.toString() )
-    val c:Rational = -2 divBy 4
-    println(c.toString() )
-    val d:Rational = -21 divBy  105
-    println(d.toString() )
 
     val half = 1 divBy 2
     val third = 1 divBy 3
 
-    println("half = $half third = $third")
-    val sum: Rational = half +  third
-    println("Sum $half plus $third = $sum ")
-    println(5 divBy 6)
-    println(" String notaion -3/33 : ${"-3/33".toRational()}")
-    println(" String notaion 23/1 : ${"23/1".toRational()}")
-    println(" String notaion 123 : ${"123".toRational()}")
-    println("Compare to rationals :")
-    println(5 divBy 6 == sum)
-    println(2 divBy 6 == "3/9".toRational())
-    println("2 divBy 6 = ${2 divBy 6}")
-    println("\"3/9\".toRational() = ${"3/9".toRational()}")
-    val threenines = "3/9".toRational()
-    println("third is equal nines :  ${third==threenines} ")
+    val sum: Rational = half + third
+    5 divBy 6 == sum
+
     val difference: Rational = half - third
-    println(1 divBy 6 == difference)
+    1 divBy 6 == difference
 
     val product: Rational = half * third
-    println(1 divBy 6 == product)
+    1 divBy 6 == product
 
     val quotient: Rational = half / third
-    println(3 divBy 2 == quotient)
+    3 divBy 2 == quotient
 
-    println("before negation operation: $half")
     val negation: Rational = -half
-    println(" sign is:  ${half.minussign}")
-    println("negation operation: $half")
-    println(-1 divBy 2 == negation)
+    -1 divBy 2 == negation
 
-    println("String comparesing section :")
-    println("(2 divBy 1).toString() == 2 :  ${(2 divBy 1).toString() == "2"}")
-    println(" ${-2 divBy 4} == -1/2 is : ${
-        (-2 divBy 4).toString() == "-1/2"}")
-    println("117/1098".toRational().toString() == "13/122")
-    println("String comparesing section Ends ! ")
+    (2 divBy 1).toString() == "2"
+    (-2 divBy 4).toString() == "-1/2"
+    "117/1098".toRational().toString() == "13/122"
 
     val twoThirds = 2 divBy 3
-    println(half < twoThirds)
-    println("Comparesen ")
-    val s1 = 3 divBy 5
-    val s2 = 1 divBy 5
-    println("S1,S2 $s1 $s2 here s1<s2 : ${s1 < s2} ")
-    println("S1,S2 $s1 $s2 here s1>s2 : ${s1 > s2} ")
-    println("S1,S2 $s1 $s2 here s1=s2 : ${s1 == s2} ")
-    println("S1,S2 $s1 $s2 here s1<=s2 : ${s1 <= s2} ")
+    half < twoThirds
 
-    println("Check in Range")
-    println("${-half} in $third..$twoThirds ${half in third..twoThirds}")
-    println("${"1/2".toRational()} in $third..$third ${"1/2".toRational() in third..third}")
-    println("1/8".toRational() in third..half)
+    half in third..twoThirds
 
-   // println(2000000000L divBy 4000000000L == 1 divBy 2)
-    println(2L divBy 4L == 1 divBy 2)
+    2000000000L divBy 4000000000L == 1 divBy 2
 
-    println("912016490186296920119201192141970416029".toBigInteger() divBy
-            "1824032980372593840238402384283940832058".toBigInteger() == 1 divBy 2)
+    "912016490186296920119201192141970416029".toBigInteger() divBy
+            "1824032980372593840238402384283940832058".toBigInteger() == 1 divBy 2
 }
 
